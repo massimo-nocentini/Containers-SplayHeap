@@ -4,6 +4,15 @@ Class {
 	#category : #'Containers-SplayHeap'
 }
 
+{ #category : #actions }
+CTBinaryTreeNodeSplay >> mergeBinaryTree: aTree [
+	^ aTree partition: value inSplayHeap: nil do: [ :l :r | 
+		  self class
+			  left: (l mergeBinaryTree: previousLink)
+			  value: value
+			  right: (r mergeBinaryTree: nextLink) ]
+]
+
 { #category : #'as yet unclassified' }
 CTBinaryTreeNodeSplay >> partition: pivot inSplayHeap: aHeap do: aBlock [
 	^ (aHeap is: value lessThan: pivot)
