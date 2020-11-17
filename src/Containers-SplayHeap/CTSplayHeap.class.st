@@ -6,27 +6,12 @@ Class {
 
 { #category : #creating }
 CTSplayHeap >> binaryTreeElementEmpty [
-	^ CTBinaryTreeEmptySplay new
-]
-
-{ #category : #testing }
-CTSplayHeap >> is: anObject lessThan: anotherObject [
-	^ anObject < anotherObject
+	^ CTBinaryTreeEmptySplayHeap new
 ]
 
 { #category : #creating }
-CTSplayHeap >> leftBinaryTreeElement: l value: v rightBinaryTreeElement: r [
-	^ CTBinaryTreeNodeSplay new
-		  previousLink: l;
-		  value: v;
-		  nextLink: r;
-		  yourself
-]
-
-{ #category : #accessing }
-CTSplayHeap >> pop [
-	^ self root ignoreBlock: [ 
-		  representation := representation popInSplayHeap: self ]
+CTSplayHeap >> binaryTreeElementNode [
+	^ CTBinaryTreeNodeSplayHeap new
 ]
 
 { #category : #adding }

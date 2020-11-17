@@ -1,11 +1,11 @@
 Class {
-	#name : #CTBinaryTreeNodeSplay,
+	#name : #CTBinaryTreeNodeSplayHeap,
 	#superclass : #CTBinaryTreeNode,
 	#category : #'Containers-SplayHeap'
 }
 
 { #category : #actions }
-CTBinaryTreeNodeSplay >> mergeBinaryTreeElement: aBTElement inBinaryTree: aBinaryTree [
+CTBinaryTreeNodeSplayHeap >> mergeBinaryTreeElement: aBTElement inBinaryTree: aBinaryTree [
 	^ aBTElement
 		  partition: value
 		  inSplayHeap: aBinaryTree
@@ -24,7 +24,7 @@ CTBinaryTreeNodeSplay >> mergeBinaryTreeElement: aBTElement inBinaryTree: aBinar
 ]
 
 { #category : #partitioning }
-CTBinaryTreeNodeSplay >> partition: pivot inSplayHeap: aHeap do: aBlock [
+CTBinaryTreeNodeSplayHeap >> partition: pivot inSplayHeap: aHeap do: aBlock [
 	^ (aHeap is: value lessThan: pivot)
 		  ifTrue: [ 
 		  self partitionLessThan: pivot inSplayHeap: aHeap do: aBlock ]
@@ -36,7 +36,7 @@ CTBinaryTreeNodeSplay >> partition: pivot inSplayHeap: aHeap do: aBlock [
 ]
 
 { #category : #partitioning }
-CTBinaryTreeNodeSplay >> partitionGreaterThanOrEqualTo: pivot inSplayHeap: aHeap do: aBlock [
+CTBinaryTreeNodeSplayHeap >> partitionGreaterThanOrEqualTo: pivot inSplayHeap: aHeap do: aBlock [
 	^ previousLink
 		  ifEmpty: [ aBlock value: aHeap binaryTreeElementEmpty value: self ]
 		  ifNotEmpty: [ 
@@ -76,7 +76,7 @@ CTBinaryTreeNodeSplay >> partitionGreaterThanOrEqualTo: pivot inSplayHeap: aHeap
 ]
 
 { #category : #partitioning }
-CTBinaryTreeNodeSplay >> partitionLessThan: pivot inSplayHeap: aHeap do: aBlock [
+CTBinaryTreeNodeSplayHeap >> partitionLessThan: pivot inSplayHeap: aHeap do: aBlock [
 	^ nextLink
 		  ifEmpty: [ aBlock value: self value: aHeap binaryTreeElementEmpty ]
 		  ifNotEmpty: [ 
@@ -116,27 +116,27 @@ CTBinaryTreeNodeSplay >> partitionLessThan: pivot inSplayHeap: aHeap do: aBlock 
 ]
 
 { #category : #removing }
-CTBinaryTreeNodeSplay >> popInSplayHeap: anHeap [
+CTBinaryTreeNodeSplayHeap >> popInBinaryTree: aBinaryTree [
 	^ previousLink ifEmpty: [ nextLink ] ifNotEmpty: [ 
 		  previousLink previousLink
 			  ifEmpty: [ 
-				  anHeap
+				  aBinaryTree
 					  leftBinaryTreeElement: previousLink nextLink
 					  value: value
 					  rightBinaryTreeElement: nextLink ]
 			  ifNotEmpty: [ :ppl | 
 				  | r |
-				  r := anHeap
+				  r := aBinaryTree
 					       leftBinaryTreeElement: previousLink nextLink
 					       value: value
 					       rightBinaryTreeElement: nextLink.
-				  anHeap
+				  aBinaryTree
 					  leftBinaryTreeElement: ppl pop
 					  value: previousLink value
 					  rightBinaryTreeElement: r ] ]
 ]
 
 { #category : #evaluating }
-CTBinaryTreeNodeSplay >> root [
+CTBinaryTreeNodeSplayHeap >> root [
 	^ previousLink ifEmpty: [ value ] ifNotEmpty: [ previousLink root ]
 ]
