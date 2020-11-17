@@ -5,15 +5,25 @@ Class {
 }
 
 { #category : #actions }
-CTBinaryTreeNodeSplay >> mergeBinaryTree: aTree [
-	^ aTree partition: value inSplayHeap: nil do: [ :l :r | 
-		  self class
-			  left: (l mergeBinaryTree: previousLink)
-			  value: value
-			  right: (r mergeBinaryTree: nextLink) ]
+CTBinaryTreeNodeSplay >> mergeBinaryTreeElement: aBTElement inBinaryTree: aBinaryTree [
+	^ aBTElement
+		  partition: value
+		  inSplayHeap: aBinaryTree
+		  do: [ :l :r | 
+			  | lMerged rMerged |
+			  lMerged := l
+				             mergeBinaryTreeElement: previousLink
+				             inBinaryTree: aBinaryTree.
+			  rMerged := r
+				             mergeBinaryTreeElement: nextLink
+				             inBinaryTree: aBinaryTree.
+			  aBinaryTree
+				  leftBinaryTreeElement: lMerged
+				  value: value
+				  rightBinaryTreeElement: rMerged ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #partitioning }
 CTBinaryTreeNodeSplay >> partition: pivot inSplayHeap: aHeap do: aBlock [
 	^ (aHeap is: value lessThan: pivot)
 		  ifTrue: [ 
@@ -25,10 +35,10 @@ CTBinaryTreeNodeSplay >> partition: pivot inSplayHeap: aHeap do: aBlock [
 				  do: aBlock ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #partitioning }
 CTBinaryTreeNodeSplay >> partitionGreaterThanOrEqualTo: pivot inSplayHeap: aHeap do: aBlock [
 	^ previousLink
-		  ifEmpty: [ aBlock value: CTBinaryTreeEmptySplay new value: self ]
+		  ifEmpty: [ aBlock value: aHeap binaryTreeElementEmpty value: self ]
 		  ifNotEmpty: [ 
 			  | y |
 			  y := previousLink value.
@@ -39,11 +49,14 @@ CTBinaryTreeNodeSplay >> partitionGreaterThanOrEqualTo: pivot inSplayHeap: aHeap
 						  inSplayHeap: aHeap
 						  do: [ :s :b | 
 							  | r l |
-							  l := self class
-								       left: previousLink previousLink
+							  l := aHeap
+								       leftBinaryTreeElement: previousLink previousLink
 								       value: y
-								       right: s.
-							  r := self class left: b value: value right: nextLink.
+								       rightBinaryTreeElement: s.
+							  r := aHeap
+								       leftBinaryTreeElement: b
+								       value: value
+								       rightBinaryTreeElement: nextLink.
 							  aBlock value: l value: r ] ]
 				  ifFalse: [ 
 					  previousLink previousLink
@@ -51,18 +64,21 @@ CTBinaryTreeNodeSplay >> partitionGreaterThanOrEqualTo: pivot inSplayHeap: aHeap
 						  inSplayHeap: aHeap
 						  do: [ :s :b | 
 							  | r rr |
-							  rr := self class
-								        left: previousLink nextLink
+							  rr := aHeap
+								        leftBinaryTreeElement: previousLink nextLink
 								        value: value
-								        right: nextLink.
-							  r := self class left: b value: y right: rr.
+								        rightBinaryTreeElement: nextLink.
+							  r := aHeap
+								       leftBinaryTreeElement: b
+								       value: y
+								       rightBinaryTreeElement: rr.
 							  aBlock value: s value: r ] ] ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #partitioning }
 CTBinaryTreeNodeSplay >> partitionLessThan: pivot inSplayHeap: aHeap do: aBlock [
 	^ nextLink
-		  ifEmpty: [ aBlock value: self value: CTBinaryTreeEmptySplay new ]
+		  ifEmpty: [ aBlock value: self value: aHeap binaryTreeElementEmpty ]
 		  ifNotEmpty: [ 
 			  | y |
 			  y := nextLink value.
@@ -73,11 +89,14 @@ CTBinaryTreeNodeSplay >> partitionLessThan: pivot inSplayHeap: aHeap do: aBlock 
 						  inSplayHeap: aHeap
 						  do: [ :s :b | 
 							  | ll l |
-							  ll := self class
-								        left: previousLink
+							  ll := aHeap
+								        leftBinaryTreeElement: previousLink
 								        value: value
-								        right: nextLink previousLink.
-							  l := self class left: ll value: y right: s.
+								        rightBinaryTreeElement: nextLink previousLink.
+							  l := aHeap
+								       leftBinaryTreeElement: ll
+								       value: y
+								       rightBinaryTreeElement: s.
 							  aBlock value: l value: b ] ]
 				  ifFalse: [ 
 					  nextLink previousLink
@@ -85,24 +104,36 @@ CTBinaryTreeNodeSplay >> partitionLessThan: pivot inSplayHeap: aHeap do: aBlock 
 						  inSplayHeap: aHeap
 						  do: [ :s :b | 
 							  | r l |
-							  l := self class left: previousLink value: value right: s.
-							  r := self class left: b value: y right: nextLink nextLink.
+							  l := aHeap
+								       leftBinaryTreeElement: previousLink
+								       value: value
+								       rightBinaryTreeElement: s.
+							  r := aHeap
+								       leftBinaryTreeElement: b
+								       value: y
+								       rightBinaryTreeElement: nextLink nextLink.
 							  aBlock value: l value: r ] ] ]
 ]
 
 { #category : #removing }
-CTBinaryTreeNodeSplay >> pop [
-	previousLink ifEmpty: [ nextLink ] ifNotEmpty: [ 
-		previousLink previousLink
-			ifEmpty: [ 
-			self class left: previousLink nextLink value: value right: nextLink ]
-			ifNotEmpty: [ :ppl | 
-				| r |
-				r := self class
-					     left: previousLink nextLink
-					     value: value
-					     right: nextLink.
-				self class left: ppl pop value: previousLink value right: r ] ]
+CTBinaryTreeNodeSplay >> popInSplayHeap: anHeap [
+	^ previousLink ifEmpty: [ nextLink ] ifNotEmpty: [ 
+		  previousLink previousLink
+			  ifEmpty: [ 
+				  anHeap
+					  leftBinaryTreeElement: previousLink nextLink
+					  value: value
+					  rightBinaryTreeElement: nextLink ]
+			  ifNotEmpty: [ :ppl | 
+				  | r |
+				  r := anHeap
+					       leftBinaryTreeElement: previousLink nextLink
+					       value: value
+					       rightBinaryTreeElement: nextLink.
+				  anHeap
+					  leftBinaryTreeElement: ppl pop
+					  value: previousLink value
+					  rightBinaryTreeElement: r ] ]
 ]
 
 { #category : #evaluating }

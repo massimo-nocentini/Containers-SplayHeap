@@ -1,18 +1,12 @@
 Class {
 	#name : #CTSplayHeap,
-	#superclass : #Object,
-	#instVars : [
-		'representation'
-	],
+	#superclass : #CTBinaryTreeAbstract,
 	#category : #'Containers-SplayHeap'
 }
 
-{ #category : #requirements }
-CTSplayHeap class >> empty [
-	^ self basicNew
-		  representation: CTBinaryTreeEmptySplay new;
-		  initialize;
-		  yourself
+{ #category : #creating }
+CTSplayHeap >> binaryTreeElementEmpty [
+	^ CTBinaryTreeEmptySplay new
 ]
 
 { #category : #testing }
@@ -20,10 +14,19 @@ CTSplayHeap >> is: anObject lessThan: anotherObject [
 	^ anObject < anotherObject
 ]
 
+{ #category : #creating }
+CTSplayHeap >> leftBinaryTreeElement: l value: v rightBinaryTreeElement: r [
+	^ CTBinaryTreeNodeSplay new
+		  previousLink: l;
+		  value: v;
+		  nextLink: r;
+		  yourself
+]
+
 { #category : #accessing }
 CTSplayHeap >> pop [
-	^ representation root ignoreBlock: [ 
-		  representation := representation pop ]
+	^ self root ignoreBlock: [ 
+		  representation := representation popInSplayHeap: self ]
 ]
 
 { #category : #adding }
@@ -32,23 +35,8 @@ CTSplayHeap >> push: anObject [
 		                  partition: anObject
 		                  inSplayHeap: self
 		                  do: [ :l :r | 
-		                  CTBinaryTreeNodeSplay
-			                  left: l
-			                  value: anObject
-			                  right: r ]
-]
-
-{ #category : #accessing }
-CTSplayHeap >> representation [
-	^ representation
-]
-
-{ #category : #accessing }
-CTSplayHeap >> representation: anObject [
-	^ representation := anObject
-]
-
-{ #category : #accessing }
-CTSplayHeap >> root [
-	^ representation root
+			                  self
+				                  leftBinaryTreeElement: l
+				                  value: anObject
+				                  rightBinaryTreeElement: r ]
 ]

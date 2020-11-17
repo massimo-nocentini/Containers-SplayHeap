@@ -4,12 +4,14 @@ Class {
 	#category : #'Containers-SplayHeap'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #partitioning }
 CTBinaryTreeEmptySplay >> partition: pivot inSplayHeap: aHeap do: aBlock [
-	^ aBlock value: self class new value: self class new
+	^ aBlock
+		  value: aHeap binaryTreeElementEmpty
+		  value: aHeap binaryTreeElementEmpty
 ]
 
 { #category : #removing }
-CTBinaryTreeEmptySplay >> pop [
+CTBinaryTreeEmptySplay >> popInSplayHeap: anHeap [
 	CollectionIsEmpty signal
 ]
