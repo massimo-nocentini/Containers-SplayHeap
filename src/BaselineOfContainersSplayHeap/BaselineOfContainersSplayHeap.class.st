@@ -11,11 +11,16 @@ BaselineOfContainersSplayHeap >> baseline: spec [
 	spec for: #common do: [ "Externals."
 		spec
 			baseline: 'ContainersEssentials'
-			with: [ 
-			spec repository: 'github://massimo-nocentini/Containers-Essentials' ].
+			with: [ spec repository: 'github://massimo-nocentini/Containers-Essentials:master' ].
+
+		spec
+			baseline: 'ContainersBinaryTreeAbstract'
+			with: [ spec repository: 'github://massimo-nocentini/Containers-BinaryTreeAbstract:master/src' ].
 
 		"Packages"
 		spec
-			package: 'Containers-SplayHeap';
-			package: 'Containers-SplayHeap-Tests' ]
+			package: 'Containers-SplayHeap'
+			with: [ spec requires: #( 'ContainersEssentials' 'ContainersBinaryTreeAbstract' ) ];
+			package: 'Containers-SplayHeap-Tests'
+			with: [ spec requires: #( 'Containers-SplayHeap' ) ] ]
 ]
