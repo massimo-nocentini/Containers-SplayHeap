@@ -1,5 +1,5 @@
 "
-A CTSplayHeapTest is a test class for testing the behavior of CTSplayHeap
+A `CTSplayHeapTest` is a test class for testing the behavior of `CTSplayHeap`
 "
 Class {
 	#name : #CTSplayHeapTest,
