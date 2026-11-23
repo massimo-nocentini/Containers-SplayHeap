@@ -3,6 +3,8 @@ I am a heap kept as a binary tree, whose `root` answers the least object. To `pu
 
 My elements are `CTBinaryTreeNodeSplayHeap` and `CTBinaryTreeEmptySplayHeap` objects. Any collection makes me with `asSplayHeap`.
 
+`pop` works only while the least object is in the root node or in the node to its left.
+
 ```smalltalk
 | heap |
 heap := CTSplayHeap empty.
