@@ -1,3 +1,6 @@
+"
+I am the baseline of the splay heaps. I depend on `ContainersEssentials` and `ContainersBinaryTreeAbstract`, and load the packages `Containers-SplayHeap` and `Containers-SplayHeap-Tests`.
+"
 Class {
 	#name : #BaselineOfContainersSplayHeap,
 	#superclass : #BaselineOf,

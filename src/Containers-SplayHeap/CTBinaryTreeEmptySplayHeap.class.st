@@ -1,3 +1,6 @@
+"
+I am the empty element of a `CTSplayHeap`, and any pivot partitions me into two empty elements.
+"
 Class {
 	#name : #CTBinaryTreeEmptySplayHeap,
 	#superclass : #CTBinaryTreeEmpty,

@@ -1,3 +1,15 @@
+"
+I am a heap kept as a binary tree, whose `root` answers the least object. To `push:` an object I partition my tree around it, and the two parts become the left and the right elements of a new node.
+
+My elements are `CTBinaryTreeNodeSplayHeap` and `CTBinaryTreeEmptySplayHeap` objects. Any collection makes me with `asSplayHeap`.
+
+```smalltalk
+| heap |
+heap := CTSplayHeap empty.
+heap push: 5; push: 2; push: 9.
+heap root ""2""
+```
+"
 Class {
 	#name : #CTSplayHeap,
 	#superclass : #CTBinaryTreeAbstract,

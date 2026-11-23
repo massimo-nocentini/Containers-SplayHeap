@@ -1,3 +1,11 @@
+"
+I am a node of a `CTSplayHeap`. My `previousLink` is the element of the objects less than my value, and my `nextLink` the one of the other objects.
+
+- `partition:inSplayHeap:do:` evaluates the block with two elements: the one of the objects less than a pivot, and the one of the others. It rebuilds the nodes that it goes through.
+- `mergeBinaryTreeElement:inBinaryTree:` partitions the other element around my value, and merges the parts with my two elements.
+- `root` answers the value of the leftmost node.
+- `popInBinaryTree:` answers the element that remains without the leftmost value, when that value is mine or the one of my `previousLink`. Otherwise it sends `pop` to the element two links to the left.
+"
 Class {
 	#name : #CTBinaryTreeNodeSplayHeap,
 	#superclass : #CTBinaryTreeNode,
